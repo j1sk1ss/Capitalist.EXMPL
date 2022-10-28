@@ -1,0 +1,15 @@
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/Debug/net6.0/Capitalist.EXMPL.csproj.AssemblyReference.cache
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/Debug/net6.0/Capitalist.EXMPL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/Debug/net6.0/Capitalist.EXMPL.AssemblyInfoInputs.cache
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/Debug/net6.0/Capitalist.EXMPL.AssemblyInfo.cs
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/Debug/net6.0/Capitalist.EXMPL.csproj.CoreCompileInputs.cache
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/bin/Debug/net6.0/Capitalist.EXMPL
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/bin/Debug/net6.0/Capitalist.EXMPL.deps.json
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/bin/Debug/net6.0/Capitalist.EXMPL.runtimeconfig.json
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/bin/Debug/net6.0/Capitalist.EXMPL.dll
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/bin/Debug/net6.0/Capitalist.EXMPL.pdb
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/Debug/net6.0/Capitalist.EXMPL.dll
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/Debug/net6.0/refint/Capitalist.EXMPL.dll
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/Debug/net6.0/Capitalist.EXMPL.pdb
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/Debug/net6.0/Capitalist.EXMPL.genruntimeconfig.cache
+/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/Debug/net6.0/ref/Capitalist.EXMPL.dll
