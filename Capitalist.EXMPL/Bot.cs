@@ -1,8 +1,8 @@
 namespace Capitalist.EXMPL;
 
-public class Player : ICapitalist
+public class Bot : ICapitalist
 {
-    public Player() {
+    public Bot() {
         Balance = 100;
         Inventory = new Dictionary<string, int>() {
             {"Wood", 0},
@@ -18,10 +18,9 @@ public class Player : ICapitalist
     public double Balance { get; set; }
     public Dictionary<string, int> Inventory { get; set; }
     public List<LoanOffer> LoanOffers { get; set; }
-    public List<long> MyLoans { get; set; }
     public List<long> GettedLoans { get; set; }
-    public LoanOffer CreateLoanOffers(int year, float percentage, double val)
-    {
+    public List<long> MyLoans { get; set; }
+    public LoanOffer CreateLoanOffers(int year, float percentage, double val) {
         return new LoanOffer() {
             id = new Random().Next(),
             Year = year,
@@ -37,7 +36,6 @@ public class Player : ICapitalist
         if (Inventory[product] >= 10) Balance += cost[product];
         Inventory[product] -= 10;
     }
-
     public void TakeLoan(LoanOffer loanOffer)
     {
         MyLoans.Add(loanOffer.id);
