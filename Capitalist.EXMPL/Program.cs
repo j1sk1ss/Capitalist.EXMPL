@@ -3,6 +3,7 @@
 internal class CapitalistGame
 {
     private readonly Player _player = new Player();
+    private List<Bot> _bots = new List<Bot>();
     private Market _market = new Market();
     public DateTime DateTime = DateTime.Now.Date;
     private static void Main()
@@ -15,7 +16,7 @@ internal class CapitalistGame
     private void Menu()
     {
         Console.Clear();
-        Console.WriteLine($"This is ur main game page \n Date is: {DateTime.ToString("MM/dd/yyyy")!}" +
+        Console.WriteLine($"This is ur main game page \nDate is: {DateTime.ToString("MM/dd/yyyy")!}" +
                           " \nList of enabled actions: \n" +
                           "<==================================================> \n" +
                           "1) Show balance window. \n2) Show global market. \n" +
@@ -54,7 +55,7 @@ internal class CapitalistGame
         Console.WriteLine("\nList of enabled loans: \n" +
                           "<==================================================>");
         for (var t = 0; t < _market.LoanOffers.Count; t++)
-            Console.WriteLine($"{t})   "+_market.LoanOffers[t].Information());
+            Console.WriteLine($"<====>\n{t})   "+_market.LoanOffers[t].Information()+"\n<====>");
         Console.WriteLine("Choose the number of loan or 999 to exit: ");
         var i = int.Parse(Console.ReadLine()!);
         if (i == 999) return;
@@ -94,7 +95,8 @@ internal class CapitalistGame
             Console.WriteLine($"{i}) "+_products[i]+" - "+_market.Storage[_products[i]]+
                               $" ({Math.Round(_market.Cost[_products[i]], 3)}$)");
         }
-        Console.WriteLine("To buy enter num and 1, to sell 2, to exit => 0");
+        Console.WriteLine("To buy enter num and 1, to sell 2");
+        Console.WriteLine("Wood_B" + " " + "Wood_B"[^1] + " " + "Wood_B"[..^2]);
         ChangeProducts(int.Parse(Console.ReadLine()!) switch {
             11 => "Wood_B",
             21 => "Potato_B",
@@ -106,13 +108,26 @@ internal class CapitalistGame
             32 => "Carrot_S",
             42 => "Meet_S",
             52 => "Gold_S",
-            0 => "EXIT" });
+            _ => "EXIT" });
     }
         private void ChangeProducts(string name) {
             if (name == "EXIT") return;
-            Console.WriteLine("This is ur balance page" +
-                              "\nList of enabled actions: \n" +
-                              "<==================================================> \n" +
-                              "1) Take loan. \n2) Get loan. \n");
+            switch (name[^1])
+            {
+                case('B'): 
+                    if (!(_player.Balance >= _market.Cost[name[..^2]])) return;
+                    _player.Balance -= _market.Cost[name[..^2]];
+                    _market.Balance += _market.Cost[name[..^2]];
+                    _player.Inventory[name[..^2]] += 10;
+                    _market.Storage[name[..^2]] -= 10;
+                    break;
+                case ('S'): 
+                    if (!(_market.Balance >= _market.Cost[name[..^2]])) return;
+                    _player.Balance += _market.Cost[name[..^2]];
+                    _market.Balance -= _market.Cost[name[..^2]];
+                    _player.Inventory[name[..^2]] -= 10;
+                    _market.Storage[name[..^2]] += 10;
+                    break;
+            }
         }
 }
