@@ -21,16 +21,9 @@ internal class CapitalistGame
                           " \nList of enabled actions: \n" +
                           "<==================================================> \n" +
                           $"1) Show extended balance. {Balance()}" +
-                          $" \n2) Show global market. \n" +
-                          "3) Trade banknotes. \n4) Inventory window. \n" +
-                          "5) Show businesses list. \n6) Show workers market. \n" +
-                          "7) Next step (after _ count of days)");
-        var tmp = Console.ReadLine();
-        if (tmp!.Length > 1) {
-            Console.Clear();
-            _economyAction.Step(_market, _products, int.Parse(tmp.Split("_")[1]), _bots, _player);
-        }
-        switch (tmp) {
+                          $"\n2) Show global market.\n3) Inventory window." +
+                          "\n4) Show businesses list.");
+        switch (Console.ReadLine()!) {
             case "1": {
                 Console.Clear();
                 BalanceWindow();
@@ -39,13 +32,125 @@ internal class CapitalistGame
                 Console.Clear();
                 GlobalMarketWindow();
             } break;
-            case "4": {
+            case "3": {
                 Console.Clear();
                 InventoryWindow();
             } break;
+            case "4": 
+                Console.Clear();
+                BusinessesWindow();
+                break;
         }
+        _economyAction.Step(_market, _products, 1, _bots, _player);
         Menu();
     }
+    private void BusinessesWindow() {
+        Console.Clear();
+        Console.WriteLine(Balance());
+        Console.WriteLine("Choose layer:" +
+                          "\nList of enabled actions: \n" +
+                          "<==================================================> \n" +
+                          "1) Open factory. \n2) Ur factories. \n");
+        switch (int.Parse(Console.ReadLine()!)) {
+            case 0: return; break;
+            case 1: OpenFactory(); break;
+            case 2: ShowFactories(); break;
+        }
+    }
+    
+    private void ShowFactories()
+    {
+        Console.Clear();
+        for (var i = 0; i < _player.factories.Count; i++) {
+            Console.WriteLine($"{i}) {_player.factories[i].Name} ->" +
+                              $" {_player.factories[i].Payment}");
+        }
+        Console.WriteLine($"Press any key or type a num to extend menu:");
+        ExtendedFactory(_player.factories[int.Parse(Console.ReadLine()!)]);
+    }
+
+    private void ExtendedFactory(Factory factory)
+    {
+        Console.Clear();
+        Console.WriteLine($"Name: {factory.Name}.\n" +
+                          $"Payment: {factory.Payment}.\n" +
+                          $"Is working?: {factory.IsWork}");
+        Console.WriteLine("<====>\n1) Turn on/off this factory.\n " +
+                          "2) Get all stuff from storage to inventory.");
+        switch (Console.ReadLine())
+        {
+            case "1":
+                factory.IsWork = !factory.IsWork;
+                break;
+            case "2":
+                for (var i = 0; i < factory.Inventory.Count; i++) {
+                    _player.Inventory[_products[i]] += factory.Inventory[_products[i]];
+                    factory.Inventory[_products[i]] = 0;
+                }
+                break;
+            default: return;
+        }
+        Console.WriteLine($"Press any key to exit:");
+        Console.ReadLine();
+    }
+    private void OpenFactory()
+    {
+        Console.Clear();
+        Console.WriteLine(Balance());
+        Console.WriteLine($"0) Wood factory. ({Math.Round(80 + 80 * _market.Inflation,3)}$)\n" +
+                          $"1) Potato farm. ({Math.Round(210 + 210 * _market.Inflation,3)}$\n" +
+                          $"2) Carrot farm. ({Math.Round(300 + 300 * _market.Inflation,3)}$)\n" +
+                          $"3) Meet farm. ({Math.Round(450 + 450 * _market.Inflation,3)}$)\n" +
+                          $"4) Golden mine. ({Math.Round(1200 + 1200 * _market.Inflation,3)}$)");
+        var money = 0.0;
+        switch (Console.ReadLine()) {
+            case "0":
+                money = 80 + 80 * _market.Inflation;
+                if (_player.Balance > money) {
+                    _player.Balance -= money;
+                    _market.Balance += money;
+                    _player.factories.Add(new Factory("Wood", 1.65));
+                }
+                break;
+            case "1":
+                money = 80 + 80 * _market.Inflation;
+                if (_player.Balance > money) {
+                    _player.Balance -= money;
+                    _market.Balance += money;
+                    _player.factories.Add(new Factory("Potato", 2.35));
+                }
+                break;
+            case "2":
+                money = 80 + 80 * _market.Inflation;
+                if (_player.Balance > money) {
+                    _player.Balance -= money;
+                    _market.Balance += money;
+                    _player.factories.Add(new Factory("Carrot", 3.65));
+                }
+                break;
+            case "3":
+                money = 80 + 80 * _market.Inflation;
+                if (_player.Balance > money) {
+                    _player.Balance -= money;
+                    _market.Balance += money;
+                    _player.factories.Add(new Factory("Meet", 4.0));
+                }
+                break;
+            case "4":
+                money = 80 + 80 * _market.Inflation;
+                if (_player.Balance > money) {
+                    _player.Balance -= money;
+                    _market.Balance += money;
+                    _player.factories.Add(new Factory("Gold", 6.9));
+                }
+                break;
+            default: return;
+        }
+    }
+    
+    
+    
+    
     private void BalanceWindow() {
         Console.Clear();
         Console.WriteLine(Balance());
@@ -117,7 +222,7 @@ internal class CapitalistGame
                           "after _ add count (prices for 1 product)");
         var line = Console.ReadLine()!;
         if (line == "") return;
-        ChangeProducts(line switch {
+        ChangeProducts(line.Split("_")[0] switch {
             "01" => "Wood_B", "11" => "Potato_B",
             "21" => "Carrot_B", "31" => "Meet_B",
             "41" => "Gold_B", "02" => "Wood_S",

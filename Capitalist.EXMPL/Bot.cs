@@ -11,12 +11,14 @@ public class Bot : ICapitalist
             {"Meet", 0},
             {"Gold", 0},
         };
-        LoanOffers = new List<LoanOffer>();
+        LoanOffers = new List<LoanOffer>();  
+        factories = new List<Factory>();  
         MyLoans = new List<long>();
         GettedLoans = new List<long>();
     }
     public double Balance { get; set; }
     public Dictionary<string, int> Inventory { get; set; }
+    public List<Factory> factories { get; set; }
     public List<LoanOffer> LoanOffers { get; set; }
     public List<long> GettedLoans { get; set; }
     public List<long> MyLoans { get; set; }

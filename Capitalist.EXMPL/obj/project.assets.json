@@ -8,26 +8,24 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\j1sk1ss\\.nuget\\packages\\": {}
+    "/Users/nikolaj/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\j1sk1ss\\RiderProjects\\Capitalist.EXMPL\\Capitalist.EXMPL\\Capitalist.EXMPL.csproj",
+      "projectUniqueName": "/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/Capitalist.EXMPL.csproj",
       "projectName": "Capitalist.EXMPL",
-      "projectPath": "C:\\Users\\j1sk1ss\\RiderProjects\\Capitalist.EXMPL\\Capitalist.EXMPL\\Capitalist.EXMPL.csproj",
-      "packagesPath": "C:\\Users\\j1sk1ss\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\j1sk1ss\\RiderProjects\\Capitalist.EXMPL\\Capitalist.EXMPL\\obj\\",
+      "projectPath": "/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/Capitalist.EXMPL.csproj",
+      "packagesPath": "/Users/nikolaj/.nuget/packages/",
+      "outputPath": "/Users/nikolaj/RiderProjects/Capitalist.EXMPL/Capitalist.EXMPL/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\j1sk1ss\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/nikolaj/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -61,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "D:\\JetBrains Rider 2022.1.2\\tools\\MSBuild\\Current\\Bin\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.400/RuntimeIdentifierGraph.json"
       }
     }
   }

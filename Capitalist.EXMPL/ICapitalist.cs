@@ -7,6 +7,7 @@ public interface ICapitalist
     public void Buy(string product, Dictionary<string, float> cost) {}
     public void Sell(string product, Dictionary<string, float> cost) {}
     public List<LoanOffer> LoanOffers { get; set; }
+    public List<Factory> factories { get; set; }
     public List<long> MyLoans { get; set; }
     public List<long> GettedLoans { get; set; }
 }
