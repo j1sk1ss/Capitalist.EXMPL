@@ -98,16 +98,16 @@ internal class CapitalistGame
         Console.WriteLine("To buy enter num and 1, to sell 2");
         Console.WriteLine("Wood_B" + " " + "Wood_B"[^1] + " " + "Wood_B"[..^2]);
         ChangeProducts(int.Parse(Console.ReadLine()!) switch {
-            11 => "Wood_B",
-            21 => "Potato_B",
-            31 => "Carrot_B",
-            41 => "Meet_B",
-            51 => "Gold_B",
-            12 => "Wood_S",
-            22 => "Potato_S",
-            32 => "Carrot_S",
-            42 => "Meet_S",
-            52 => "Gold_S",
+            01 => "Wood_B",
+            11 => "Potato_B",
+            21 => "Carrot_B",
+            31 => "Meet_B",
+            41 => "Gold_B",
+            02 => "Wood_S",
+            12 => "Potato_S",
+            22 => "Carrot_S",
+            32 => "Meet_S",
+            42 => "Gold_S",
             _ => "EXIT" });
     }
         private void ChangeProducts(string name) {
