@@ -3,7 +3,7 @@ namespace Capitalist.EXMPL;
 public class Bot : ICapitalist
 {
     public Bot() {
-        Balance = 100;
+        Balance = 500;
         Inventory = new Dictionary<string, int>() {
             {"Wood", 0},
             {"Potato", 0},

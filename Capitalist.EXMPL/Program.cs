@@ -3,16 +3,17 @@
 internal class CapitalistGame
 {
     private readonly Player _player = new Player();
-    private List<Bot> _bots = new List<Bot>();
-    private Market _market = new Market();
-    private EconomyAction _economyAction = new();
+    private readonly List<Bot> _bots = new() {
+        new Bot(), new Bot(), new Bot(), new Bot(), new Bot(), new Bot()
+    };
+    private readonly Market _market = new Market();
+    private readonly EconomyAction _economyAction = new();
     private static void Main()
     {
         var game = new CapitalistGame();
         var action = new EconomyAction();
         game.Menu();
     }
-
     private void Menu()
     {
         Console.Clear();
@@ -45,7 +46,6 @@ internal class CapitalistGame
         }
         Menu();
     }
-
     private void BalanceWindow() {
         Console.Clear();
         Console.WriteLine(Balance());
@@ -91,7 +91,6 @@ internal class CapitalistGame
             _market.MyLoans.RemoveAt(_market.MyLoans.IndexOf(loan.id));
         }
     }
-
     private string Balance()
     {
         return $"Ur balance is: {Math.Round(_player.Balance, 3)}$" +
@@ -114,41 +113,36 @@ internal class CapitalistGame
                               $" ({Math.Round(_market.Cost[_products[i]], 3)}$)");
         }
         Console.WriteLine($"Ur balance is: {Math.Round(_player.Balance, 3)}$" +
-                          $", Inflation is: {Math.Round(_market.Inflation, 3)}%");
-        Console.WriteLine("To buy enter num and 1, to sell 2, after _ add count (prices for 1 product) / 999 -> EXIT");
-
+                          $", Inflation is: {Math.Round(_market.Inflation, 3)}%\nTo buy enter num and 1, to sell 2, " +
+                          "after _ add count (prices for 1 product)");
         var line = Console.ReadLine()!;
-        if (line == "999") return;
-        var tmp = line.Split("_");
-        ChangeProducts(int.Parse(tmp[0]) switch {
-            01 => "Wood_B",
-            11 => "Potato_B",
-            21 => "Carrot_B",
-            31 => "Meet_B",
-            41 => "Gold_B",
-            02 => "Wood_S",
-            12 => "Potato_S",
-            22 => "Carrot_S",
-            32 => "Meet_S",
-            42 => "Gold_S"}, int.Parse(tmp[1]));
+        if (line == "") return;
+        ChangeProducts(line switch {
+            "01" => "Wood_B", "11" => "Potato_B",
+            "21" => "Carrot_B", "31" => "Meet_B",
+            "41" => "Gold_B", "02" => "Wood_S",
+            "12" => "Potato_S", "22" => "Carrot_S",
+            "32" => "Meet_S", "42" => "Gold_S",
+            _ => ""
+        }, int.Parse(line.Split("_")[1]));
     }
-        private void ChangeProducts(string name, int count) {
-            switch (name[^1])
-            {
-                case('B'): 
-                    if (!(_player.Balance >= count * _market.Cost[name[..^2]])) return;
-                    _player.Balance -= count * _market.Cost[name[..^2]];
-                    _market.Balance += count * _market.Cost[name[..^2]];
-                    _player.Inventory[name[..^2]] += count;
-                    _market.Storage[name[..^2]] -= count;
-                    break;
-                case ('S'): 
-                    if (!(_market.Balance >= count * _market.Cost[name[..^2]])) return;
-                    _player.Balance += count * _market.Cost[name[..^2]];
-                    _market.Balance -= count * _market.Cost[name[..^2]];
-                    _player.Inventory[name[..^2]] -= count;
-                    _market.Storage[name[..^2]] += count;
-                    break;
-            }
+    private void ChangeProducts(string name, int count) {
+        switch (name[^1])
+        {
+            case('B'): 
+                if (!(_player.Balance >= count * _market.Cost[name[..^2]])) return;
+                _player.Balance -= count * _market.Cost[name[..^2]];
+                _market.Balance += count * _market.Cost[name[..^2]];
+                _player.Inventory[name[..^2]] += count;
+                _market.Storage[name[..^2]] -= count;
+                break;
+            case ('S'): 
+                if (!(_market.Balance >= count * _market.Cost[name[..^2]])) return;
+                _player.Balance += count * _market.Cost[name[..^2]];
+                _market.Balance -= count * _market.Cost[name[..^2]];
+                _player.Inventory[name[..^2]] -= count;
+                _market.Storage[name[..^2]] += count;
+                break;
         }
+    }
 }
