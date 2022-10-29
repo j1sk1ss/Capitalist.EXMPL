@@ -7,6 +7,6 @@ public class LoanOffer {
     public double Percentage { get; set; }
 
     public string Information() {
-        return $"Value: {Value}\nPercentage: {Percentage}\nYears: {Year}";
+        return $"Value: {Math.Round(Value,3)}\nPercentage: {Math.Round(Percentage,3)}\nYears: {Year}";
     }
 }
