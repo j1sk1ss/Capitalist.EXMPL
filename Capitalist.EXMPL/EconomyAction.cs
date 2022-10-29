@@ -5,6 +5,7 @@ public class EconomyAction
     public DateTime DateTime = DateTime.Now;
     public void Step(Market market, List<string> keys, int count, List<Bot> bots, Player player) {
         for (var i = 0; i < count; i++) {
+            if (player.Balance < 0) return;
             var dateTime = DateTime.AddDays(1);
             DateTime = dateTime;
 
@@ -22,10 +23,9 @@ public class EconomyAction
             foreach (var t1 in player.factories) {
                 t1.DoWork();
                 if (t1.IsWork) {
-                    market.Balance += t1.Payment;
-                    player.Balance -= t1.Payment;
+                    market.Balance += t1.Payment + t1.Payment * market.Inflation;
+                    player.Balance -= t1.Payment + t1.Payment * market.Inflation;
                 }
-                break;
             }
             Refile(market, keys);
             //Destroy(market, keys);

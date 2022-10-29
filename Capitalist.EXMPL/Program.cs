@@ -1,4 +1,6 @@
-﻿namespace Capitalist.EXMPL;
+﻿using System.Globalization;
+
+namespace Capitalist.EXMPL;
 
 internal class CapitalistGame
 {
@@ -62,18 +64,20 @@ internal class CapitalistGame
     {
         Console.Clear();
         for (var i = 0; i < _player.factories.Count; i++) {
-            Console.WriteLine($"{i}) {_player.factories[i].Name} ->" +
-                              $" {_player.factories[i].Payment}");
+            Console.WriteLine($"{i}) {_player.factories[i].Name} ->" + 
+            $" {Math.Round(_player.factories[i].Payment + _player.factories[i].Payment*_market.Inflation,3)}$");
         }
-        Console.WriteLine($"Press any key or type a num to extend menu:");
-        ExtendedFactory(_player.factories[int.Parse(Console.ReadLine()!)]);
+        Console.WriteLine($"Press 999 or type a num to extend menu:");
+        var tmp = Console.ReadLine()!;
+        if (tmp == "999") return;
+        ExtendedFactory(_player.factories[int.Parse(tmp)]);
     }
 
     private void ExtendedFactory(Factory factory)
     {
         Console.Clear();
         Console.WriteLine($"Name: {factory.Name}.\n" +
-                          $"Payment: {factory.Payment}.\n" +
+                          $"Payment: {Math.Round(factory.Payment + factory.Payment * _market.Inflation,3)}$.\n" +
                           $"Is working?: {factory.IsWork}");
         Console.WriteLine("<====>\n1) Turn on/off this factory.\n " +
                           "2) Get all stuff from storage to inventory.");
@@ -113,7 +117,7 @@ internal class CapitalistGame
                 }
                 break;
             case "1":
-                money = 80 + 80 * _market.Inflation;
+                money = 210 + 210 * _market.Inflation;
                 if (_player.Balance > money) {
                     _player.Balance -= money;
                     _market.Balance += money;
@@ -121,7 +125,7 @@ internal class CapitalistGame
                 }
                 break;
             case "2":
-                money = 80 + 80 * _market.Inflation;
+                money = 300 + 300 * _market.Inflation;
                 if (_player.Balance > money) {
                     _player.Balance -= money;
                     _market.Balance += money;
@@ -129,7 +133,7 @@ internal class CapitalistGame
                 }
                 break;
             case "3":
-                money = 80 + 80 * _market.Inflation;
+                money = 450 + 450 * _market.Inflation;
                 if (_player.Balance > money) {
                     _player.Balance -= money;
                     _market.Balance += money;
@@ -137,7 +141,7 @@ internal class CapitalistGame
                 }
                 break;
             case "4":
-                money = 80 + 80 * _market.Inflation;
+                money = 1200 + 1200 * _market.Inflation;
                 if (_player.Balance > money) {
                     _player.Balance -= money;
                     _market.Balance += money;
