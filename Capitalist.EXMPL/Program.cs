@@ -16,11 +16,10 @@ internal class CapitalistGame
     private void Menu()
     {
         Console.Clear();
-        Console.WriteLine($"This is ur main game page \nDate is: {_economyAction._dateTime.ToString("MM/dd/yyyy")!}" +
+        Console.WriteLine($"This is ur main game page \nDate is: {_economyAction.DateTime.ToString("MM/dd/yyyy")!}" +
                           " \nList of enabled actions: \n" +
                           "<==================================================> \n" +
-                          $"1) Show extended balance. ({Math.Round(_player.Balance, 3)}$)" +
-                          $" Inflation is: {Math.Round(_market.Inflation, 3)}%" +
+                          $"1) Show extended balance. {Balance()}" +
                           $" \n2) Show global market. \n" +
                           "3) Trade banknotes. \n4) Inventory window. \n" +
                           "5) Show businesses list. \n6) Show workers market. \n" +
@@ -28,7 +27,7 @@ internal class CapitalistGame
         var tmp = Console.ReadLine();
         if (tmp!.Length > 1) {
             Console.Clear();
-            _economyAction.Step(_market, _products, int.Parse(tmp.Split("_")[1]));
+            _economyAction.Step(_market, _products, int.Parse(tmp.Split("_")[1]), _bots, _player);
         }
         switch (tmp) {
             case "1": {
@@ -49,16 +48,15 @@ internal class CapitalistGame
 
     private void BalanceWindow() {
         Console.Clear();
-        Console.WriteLine($"Ur balance is: {Math.Round(_player.Balance, 3)}$" +
-                          $", Inflation is: {Math.Round(_market.Inflation, 3)}%");
+        Console.WriteLine(Balance());
         Console.WriteLine("This is ur balance page" +
                           "\nList of enabled actions: \n" +
                           "<==================================================> \n" +
-                          "1) Take loan. \n2) Get loan. \n");
+                          "1) Take loan. \n2) Ur loans. \n");
         switch (int.Parse(Console.ReadLine()!)) {
             case 0: return; break;
             case 1: TakeLoanWindow(); break;
-            case 2: CreateLoanOffer(); break;
+            case 2: GetLoans(); break;
         }
     }
     private void InventoryWindow() {
@@ -71,13 +69,13 @@ internal class CapitalistGame
     }
     private void TakeLoanWindow() {
         Console.Clear();
-        Console.WriteLine($"Ur balance is: {Math.Round(_player.Balance, 3)}$" +
-                          $", Inflation is: {Math.Round(_market.Inflation, 3)}%");
-        Console.WriteLine("\nList of enabled loans: \n" +
+        Console.WriteLine(Balance());
+        Console.WriteLine("\nList of enabled loans:\n" +
                           "<==================================================>");
         for (var t = 0; t < _market.LoanOffers.Count; t++)
             Console.WriteLine($"<====>\n{t})"+_market.LoanOffers[t].Information());
-        Console.WriteLine("Choose the number of loan or 999 to exit: ");
+        Console.WriteLine("<==================================================>" +
+                          "\nChoose the number of loan or 999 to exit:");
         var i = int.Parse(Console.ReadLine()!);
         if (i == 999) return;
         var loan = _market.LoanOffers[i];
@@ -93,25 +91,21 @@ internal class CapitalistGame
             _market.MyLoans.RemoveAt(_market.MyLoans.IndexOf(loan.id));
         }
     }
-    private void CreateLoanOffer() {
+
+    private string Balance()
+    {
+        return $"Ur balance is: {Math.Round(_player.Balance, 3)}$" +
+               $", Inflation is: {Math.Round(_market.Inflation, 3)}%";
+    }
+    private void GetLoans() {
         Console.Clear();
-        Console.WriteLine($"Ur balance is: {Math.Round(_player.Balance, 3)}$" +
-                          $", Inflation is: {Math.Round(_market.Inflation, 3)}%");
-        Console.WriteLine("Type loan value: ");
-        var vl = double.Parse(Console.ReadLine()!);
-            Console.WriteLine("Type percentage: ");
-            var percentage = double.Parse(Console.ReadLine()!);
-                Console.WriteLine("Type years: ");
-                var years = int.Parse(Console.ReadLine()!);
-                var loanOffer = new LoanOffer() {
-            Value =vl,
-            Percentage = percentage,
-            Year = years
-        };
-        _player.Balance -= loanOffer.Value;
-        _player.GettedLoans.Add(loanOffer.id);
-        _player.LoanOffers.Add(loanOffer);
-        _market.LoanOffers.Add(loanOffer);
+        Console.WriteLine(Balance());
+        Console.WriteLine("List of active loans:\n" +
+                          "<==================================================>\n");
+        foreach (var t1 in _player.LoanOffers)
+            Console.WriteLine($"<====>\n"+t1.Information());
+        Console.WriteLine("<==================================================>");
+        Console.ReadLine();
     }
     private readonly List<string> _products = new() {"Wood","Potato","Carrot","Meet", "Gold"};
     private void GlobalMarketWindow() {

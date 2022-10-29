@@ -58,14 +58,10 @@ public class Market
     public void CreateLoan()
     {
         var random = new Random().Next() % Balance;
-        var ID = new Random().Next();
-        LoanOffers.Add(new LoanOffer(){
-            id = ID,
-            Year = 1 + new Random().Next() % 10,
-            Value = random,
-            Percentage = 0.1 + new Random().Next() % 1.0
-        });
-        MyLoans.Add(ID);
+        var id = new Random().Next();
+        LoanOffers.Add(new LoanOffer(random, 1 + new Random().Next() % 640, 
+            0.1 + (new Random().Next() % 10) / 10.0, id));
+        MyLoans.Add(id);
         Balance -= random;
     }
 }

@@ -20,14 +20,8 @@ public class Player : ICapitalist
     public List<LoanOffer> LoanOffers { get; set; }
     public List<long> MyLoans { get; set; }
     public List<long> GettedLoans { get; set; }
-    public LoanOffer CreateLoanOffers(int year, float percentage, double val)
-    {
-        return new LoanOffer() {
-            id = new Random().Next(),
-            Year = year,
-            Percentage = percentage,
-            Value = val
-        };
+    public LoanOffer CreateLoanOffers(int year, float percentage, double val) {
+        return new LoanOffer(val, year, percentage, new Random().Next());
     }
     public void Buy(string product, Dictionary<string, float> cost) {
         if (Balance >= cost[product]) Balance -= cost[product];
