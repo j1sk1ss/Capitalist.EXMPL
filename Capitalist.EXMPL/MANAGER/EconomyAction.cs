@@ -1,77 +1,21 @@
-using Capitalist.EXMPL.OBJECTS;
-using Capitalist.EXMPL.OBJECTS.BOT;
-using Capitalist.EXMPL.OBJECTS.MARKET;
-using Capitalist.EXMPL.OBJECTS.PLAYER;
+using Capitalist.EXMPL.UI;
 
 namespace Capitalist.EXMPL.MANAGER;
 
 public class EconomyAction {
     public DateTime DateTime = DateTime.Now;
-    public void Step(Market market, int count, List<Bot> bots, Player player) {
+    public void Step(int count) {
         for (var i = 0; i < count; i++) {
-            if (player.Balance < 0) return;
+            if (CapitalistGame.Player.Balance < 0) return;
             
             DateTime = DateTime.AddDays(1);
 
-            foreach (var t in bots) 
-                BotLogic(t, market);
+            foreach (var bot in CapitalistGame.Bots) 
+                bot.BotTurn();
             
-            for (var t = 0; t < player.LoanOffers.Count; t++) {
-                market.Balance += player.LoanOffers[t].Payment;
-                player.Balance -= player.LoanOffers[t].Payment;
-                if (--player.LoanOffers[t].Year > 1) continue;
-                    player.LoanOffers.RemoveAt(t);
-                    break;
-            }
-            
-            foreach (var t1 in player.Factories) {
-                t1.DoWork();
-                if (t1.IsWork) {
-                    market.Balance += t1.Payment + t1.Payment * market.Inflation;
-                    player.Balance -= t1.Payment + t1.Payment * market.Inflation;
-                }
-            }
-            
-            Refile(market);
-            market.GenerateCost();
-            
-            switch (market.LoanOffers.Count) {
-                case < 10 when market.Inflation > 5.0:
-                    //market.CreateLoan();
-                    break;
-                case >= 1 when market.Inflation > 0 && market.LoanOffers.Count > 10:
-                    market.LoanOffers.RemoveAt(0);
-                    break;
-            }
-        }
-    }
-
-    private static void BotLogic(ICapitalist bot, Market market) {
-        for (var t = 0; t < bot.LoanOffers.Count; t++) {
-            market.Balance += bot.LoanOffers[t].Payment;
-            bot.Balance -= bot.LoanOffers[t].Payment;
-            if (--bot.LoanOffers[t].Year > 1) continue;
-            bot.LoanOffers.RemoveAt(t);
-            break;
-        }
-    }
-    
-    private static void Refile(Market market) {
-        market.Storage["Wood"]   += new Random().Next() % 50;
-        market.Storage["Potato"] += new Random().Next() % 25;
-        market.Storage["Carrot"] += new Random().Next() % 30;
-        market.Storage["Meet"]   += new Random().Next() % 15;
-        market.Storage["Gold"]   += new Random().Next() % 5;
-        
-        if (market.Inflation < 1.0) market.Balance += new Random().Next() % 400;
-    }
-    
-    private static void Destroy(Market market, IReadOnlyList<string> keys) {
-        for (var i = 0; i < market.Storage.Count; i++) {
-            var count = new Random().Next() % 5;
-                if (count >= market.Storage[keys[i]]) continue;
-                market.Storage[keys[i]] -= count;
-                market.Balance += count * market.Cost[keys[i]];
+            CapitalistGame.Bank.BankTurn();
+            CapitalistGame.Market.MarketTurn();
+            CapitalistGame.Player.PlayerTurn();
         }
     }
 }

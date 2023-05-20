@@ -6,6 +6,7 @@ using FotNET.NETWORK;
 using FotNET.NETWORK.LAYERS;
 using FotNET.NETWORK.LAYERS.ACTIVATION;
 using FotNET.NETWORK.LAYERS.ACTIVATION.ACTIVATION_FUNCTION.DOUBLE_LEAKY_RELU;
+using FotNET.NETWORK.LAYERS.FLATTEN;
 using FotNET.NETWORK.LAYERS.PERCEPTRON;
 using FotNET.NETWORK.LAYERS.PERCEPTRON.ADAM.ADAM_PERCEPTRON;
 using FotNET.NETWORK.MATH.Initialization.HE;
@@ -28,6 +29,7 @@ public class Bank {
         LoanOffers = new List<LoanOffer>();
         
         BankNetwork = new Network(new List<ILayer> {
+            new FlattenLayer(),
             new PerceptronLayer(5, 25, new HeInitialization(), new AdamPerceptronOptimization()),
             new ActivationLayer(new DoubleLeakyReLu()),
             new PerceptronLayer(25, 50, new HeInitialization(), new AdamPerceptronOptimization()),
@@ -42,7 +44,7 @@ public class Bank {
         });
     }
     
-    private double Budget { get; set; }
+    public double Budget { get; set; }
     private double TaxPercent { get; set; }
     private double Vat { get; set; }
     private double AwaliableLoan { get; set; }
@@ -64,6 +66,8 @@ public class Bank {
     private int _previousAnswer;
     
     public void BankTurn() {
+        BankNetwork.ForwardFeed(new Tensor(5, 1, 1));
+        
         GetPercent();
         CreateLoans();
         
@@ -118,28 +122,6 @@ public class Bank {
     private double _gpd;
     
     public bool Transaction(ICapitalist firstSubject, ICapitalist secondSubject, double value) {
-        if (firstSubject.Balance < value + value * Vat) return false;
-        
-        firstSubject.Balance  -= value + value * Vat;
-        secondSubject.Balance += value;
-
-        _gpd += 2 * value + value * Vat;
-        
-        return true;
-    }
-    
-    public bool Transaction(ICapitalist firstSubject, Market secondSubject, double value) {
-        if (firstSubject.Balance < value + value * Vat) return false;
-        
-        firstSubject.Balance  -= value + value * Vat;
-        secondSubject.Balance += value;
-
-        _gpd += 2 * value + value * Vat;
-        
-        return true;
-    }
-
-    public bool Transaction(Market firstSubject, ICapitalist secondSubject, double value) {
         if (firstSubject.Balance < value + value * Vat) return false;
         
         firstSubject.Balance  -= value + value * Vat;
