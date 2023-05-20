@@ -113,9 +113,14 @@ public class Bank {
     private void CreateLoans() {
         var random = new Random().Next() % AwaliableLoan;
         var id = new Random().Next();
+
+        if (LoanOffers.Count < 10)
+            LoanOffers.Add(new LoanOffer(random, 1 + new Random().Next() % 640,
+                0.1 + (new Random().Next() % 10) / 10.0, id, null!));
+        else
+            LoanOffers[new Random().Next() % 10] = new LoanOffer(random, 1 + new Random().Next() % 640,
+                0.1 + (new Random().Next() % 10) / 10.0, id, null!);
         
-        LoanOffers.Add(new LoanOffer(random, 1 + new Random().Next() % 640, 
-            0.1 + (new Random().Next() % 10) / 10.0, id, null!));
         Budget -= random;
     }
     

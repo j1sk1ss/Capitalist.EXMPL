@@ -5,14 +5,17 @@ using Capitalist.EXMPL.OBJECTS.FACTORY.OBJECTS;
 using Capitalist.EXMPL.OBJECTS.FACTORY.OBJECTS.FACTORY_TYPES;
 using Capitalist.EXMPL.OBJECTS.MARKET;
 using Capitalist.EXMPL.OBJECTS.PLAYER;
+using Capitalist.EXMPL.UI.WINDOWS;
 
 namespace Capitalist.EXMPL.UI;
 
 internal class CapitalistGame {
-    public static readonly Player Player = new();
+    public static readonly Player Player = new(1000);
     
     public static readonly List<Bot> Bots = new() {
-        new Bot(), new Bot(), new Bot(), new Bot(), new Bot(), new Bot()
+        new Bot(1200), new Bot(1200), 
+        new Bot(1200), new Bot(1200), 
+        new Bot(1200), new Bot(1200)
     };
     
     public static readonly Market Market = new();
@@ -27,45 +30,36 @@ internal class CapitalistGame {
     }
     
     private void Menu() {
-        Console.Clear();
-        Console.WriteLine($"This is ur main game page \nDate is: {EconomyAction.DateTime.ToString("MM/dd/yyyy")!}" +
-                          " \nList of enabled actions: \n" +
-                          "<==================================================> \n" +
-                          $"1) Show extended balance. {Balance()}" +
-                          "\n2) Show global market.\n3) Inventory window." +
-                          "\n4) Show businesses list.");
+        while (true) {
+            Console.Clear();
+            Console.WriteLine(Interface.GetMenu(Player));
         
-        switch (Console.ReadLine()!) {
-            case "1": {
-                Console.Clear();
-                BalanceWindow();
-            } break;
-            case "2": {
-                Console.Clear();
-                GlobalMarketWindow();
-            } break;
-            case "3": {
-                Console.Clear();
-                InventoryWindow();
-            } break;
-            case "4": 
-                Console.Clear();
-                BusinessesWindow();
-                break;
+            switch (Console.ReadLine()!) {
+                case "1": 
+                    Console.Clear();
+                    BalanceWindow();
+                    break;
+                case "2": 
+                    Console.Clear();
+                    GlobalMarketWindow();
+                    break;
+                case "3": 
+                    Console.Clear();
+                    InventoryWindow();
+                    break;
+                case "4": 
+                    Console.Clear();
+                    BusinessesWindow();
+                    break;
+            }
+        
+            EconomyAction.Step(1);  
         }
-        
-        EconomyAction.Step(1);
-        Menu();
     }
     
     private void BusinessesWindow() {
-        Console.Clear();
-        Console.WriteLine(Balance());
-        Console.WriteLine("Choose layer:" +
-                          "\nList of enabled actions: \n" +
-                          "<==================================================> \n" +
-                          "1) Open factory. \n2) Ur factories. \n");
-
+        Console.WriteLine(Interface.GetFactoryMenu(Player));
+        
         var answer = Console.ReadLine();
         if (answer == "") return;
         
@@ -76,13 +70,7 @@ internal class CapitalistGame {
     }
     
     private void ShowFactories() {
-        Console.Clear();
-        
-        for (var i = 0; i < Player.Factories.Count; i++) 
-            Console.WriteLine($"{i}) {Player.Factories[i].Name} ->" + 
-            $" {Math.Round(Player.Factories[i].GetPayment() + Player.Factories[i].GetPayment() * Market.Inflation,3)}$");
-        
-        Console.WriteLine("Press 999 or type a num to extend menu:");
+        Console.WriteLine(Interface.FactoryList());
         
         var tmp = Console.ReadLine()!;
         if (tmp == "999") return;
@@ -91,11 +79,7 @@ internal class CapitalistGame {
     }
 
     private void ExtendedFactory(Factory factory) {
-        Console.Clear();
-        Console.WriteLine($"Name: {factory.Name}.\n" +
-                          $"Payment: {Math.Round(factory.GetPayment() + factory.GetPayment() * Market.Inflation,3)}$.\n" +
-                          $"Is working?: {factory.IsWork}");
-        Console.WriteLine("<====>\n1) Turn on/off this factory.");
+        Console.WriteLine(Interface.ExtendedFactory(factory));
         
         switch (Console.ReadLine()) {
             case "1":
@@ -103,19 +87,16 @@ internal class CapitalistGame {
                 break;
             default: return;
         }
-        
-        Console.WriteLine("Press any key to exit:");
-        Console.ReadLine();
     }
     
     private void OpenFactory() {
         Console.Clear();
         Console.WriteLine(Balance());
         Console.WriteLine($"0) Wood factory. ({Math.Round(80 + 80 * Market.Inflation, 3)}$)\n" +
-                          $"1) Potato farm. ({Math.Round(210 + 210 * Market.Inflation, 3)}$\n" +
-                          $"2) Carrot farm. ({Math.Round(300 + 300 * Market.Inflation, 3)}$)\n" +
-                          $"3) Meat farm. ({Math.Round(450 + 450 * Market.Inflation, 3)}$)\n" +
-                          $"4) Golden mine. ({Math.Round(1200 + 1200 * Market.Inflation, 3)}$)");
+                          $"1) Potato farm.  ({Math.Round(210 + 210 * Market.Inflation, 3)}$\n" +
+                          $"2) Carrot farm.  ({Math.Round(300 + 300 * Market.Inflation, 3)}$)\n" +
+                          $"3) Meat farm.    ({Math.Round(450 + 450 * Market.Inflation, 3)}$)\n" +
+                          $"4) Golden mine.  ({Math.Round(1200 + 1200 * Market.Inflation, 3)}$)");
 
         double money;
         
@@ -182,11 +163,7 @@ internal class CapitalistGame {
     }
     
     private void InventoryWindow() {
-        Console.Clear();
-        
-        for (var i = 0; i < Player.Inventory.Count; i++) 
-            Console.WriteLine($"{i}) {_products[i]} -> {Player.Inventory[_products[i]]}");
-        
+        Console.WriteLine(Interface.GetInventory(Player));
         Console.WriteLine("Press any key to exit:");
         Console.ReadLine();
     }

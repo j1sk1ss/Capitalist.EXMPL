@@ -16,8 +16,8 @@ using FotNET.NETWORK.MATH.OBJECTS;
 namespace Capitalist.EXMPL.OBJECTS.BOT;
 
 public class Bot : ICapitalist {
-    public Bot() {
-        Balance   = 500;
+    public Bot(double balance) {
+        Balance   = balance;
         Inventory = new Dictionary<string, int>() {
             {"Wood", 0},
             {"Potato", 0},

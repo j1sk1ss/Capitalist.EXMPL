@@ -5,8 +5,8 @@ using Capitalist.EXMPL.OBJECTS.FACTORY.OBJECTS;
 namespace Capitalist.EXMPL.OBJECTS.PLAYER;
 
 public class Player : ICapitalist {
-    public Player() {
-        Balance   = 100;
+    public Player(double balance) {
+        Balance   = balance;
         Inventory = new Dictionary<string, int>() {
             {"Wood", 0},
             {"Potato", 0},
