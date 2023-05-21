@@ -21,9 +21,11 @@ public class Market : ICapitalist {
     public Market() {
         Inventory = new Dictionary<string, int>();
         
-        YearCost = new List<List<double>>();
+        YearCost      = new List<List<double>>();
+        YearInflation = new List<double>();
+        
         Balance  = 10000;
-        Storage  = new Dictionary<string, int>() {
+        Storage  = new Dictionary<string, int> {
             {"Wood", 2125},
             {"Potato", 3875},
             {"Carrot", 980},
@@ -67,8 +69,8 @@ public class Market : ICapitalist {
     }
     
     public List<LoanOffer> LoanOffers { get; set; }
-    
-    public void GenerateCost() {
+
+    private void GenerateCost() {
         Cost = new Dictionary<string, double>() {
             {"Wood", Balance / Storage["Wood"]},
             {"Potato", Balance / Storage["Potato"]},
@@ -77,16 +79,26 @@ public class Market : ICapitalist {
             {"Gold", Balance / Storage["Gold"]},
         };
         
-        if (YearCost.Count < 100) YearCost.Add(new List<double>() {Cost["Wood"], Cost["Potato"], Cost["Carrot"], Cost["Meat"], Cost["Gold"]});
-        else YearCost.Clear();
+        if (YearCost.Count < 100) YearCost.Add(new List<double> {Cost["Wood"], Cost["Potato"], Cost["Carrot"], Cost["Meat"], Cost["Gold"]});
+        else {
+            YearCost.RemoveAt(0);
+            YearCost.Add(new List<double> {Cost["Wood"], Cost["Potato"], Cost["Carrot"], Cost["Meat"], Cost["Gold"]});
+        }
         
         Inflation = Balance / 10000.0 -
                     (Storage["Wood"] + Storage["Potato"] + Storage["Carrot"] + Storage["Meat"] + Storage["Gold"]) /
                     7512.0;
+        
+        if (YearInflation.Count < 100) YearInflation.Add(Inflation);
+        else {
+            YearInflation.RemoveAt(0);
+            YearInflation.Add(Inflation);
+        }
     }
     
-    private List<List<double>> YearCost { get; set; }
-    public Dictionary<string, int> Storage { get; set; }
+    public List<List<double>> YearCost { get; }
+    public List<double> YearInflation { get; }
+    public Dictionary<string, int> Storage { get; }
     public Dictionary<string, double> Cost { get; private set; }
     public List<long> MyLoans { get; set; }
 

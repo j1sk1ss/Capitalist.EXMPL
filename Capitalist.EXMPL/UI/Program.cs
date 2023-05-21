@@ -36,19 +36,15 @@ internal class CapitalistGame {
         
             switch (Console.ReadLine()!) {
                 case "1": 
-                    Console.Clear();
                     BalanceWindow();
                     break;
                 case "2": 
-                    Console.Clear();
                     GlobalMarketWindow();
                     break;
                 case "3": 
-                    Console.Clear();
                     InventoryWindow();
                     break;
                 case "4": 
-                    Console.Clear();
                     BusinessesWindow();
                     break;
             }
@@ -57,7 +53,8 @@ internal class CapitalistGame {
         }
     }
     
-    private void BusinessesWindow() {
+    private static void BusinessesWindow() {
+        Console.Clear();
         Console.WriteLine(Interface.GetFactoryMenu(Player));
         
         var answer = Console.ReadLine();
@@ -69,7 +66,8 @@ internal class CapitalistGame {
         }
     }
     
-    private void ShowFactories() {
+    private static void ShowFactories() {
+        Console.Clear();
         Console.WriteLine(Interface.FactoryList());
         
         var tmp = Console.ReadLine()!;
@@ -78,7 +76,8 @@ internal class CapitalistGame {
         ExtendedFactory(Player.Factories[int.Parse(tmp)]);
     }
 
-    private void ExtendedFactory(Factory factory) {
+    private static void ExtendedFactory(Factory factory) {
+        Console.Clear();
         Console.WriteLine(Interface.ExtendedFactory(factory));
         
         switch (Console.ReadLine()) {
@@ -89,17 +88,11 @@ internal class CapitalistGame {
         }
     }
     
-    private void OpenFactory() {
+    private static void OpenFactory() {
         Console.Clear();
-        Console.WriteLine(Balance());
-        Console.WriteLine($"0) Wood factory. ({Math.Round(80 + 80 * Market.Inflation, 3)}$)\n" +
-                          $"1) Potato farm.  ({Math.Round(210 + 210 * Market.Inflation, 3)}$\n" +
-                          $"2) Carrot farm.  ({Math.Round(300 + 300 * Market.Inflation, 3)}$)\n" +
-                          $"3) Meat farm.    ({Math.Round(450 + 450 * Market.Inflation, 3)}$)\n" +
-                          $"4) Golden mine.  ({Math.Round(1200 + 1200 * Market.Inflation, 3)}$)");
-
-        double money;
+        Console.WriteLine(Interface.FactoryManager(Player));
         
+        double money;
         switch (Console.ReadLine()) {
             case "0":
                 money = 80 + 80 * Market.Inflation;
@@ -145,14 +138,10 @@ internal class CapitalistGame {
         }
     }
     
-    private void BalanceWindow() {
+    private static void BalanceWindow() {
         Console.Clear();
-        Console.WriteLine(Balance());
-        Console.WriteLine("This is ur balance page" +
-                          "\nList of enabled actions: \n" +
-                          "<==================================================> \n" +
-                          "1) Take loan. \n2) Ur loans. \n");
-
+        Console.WriteLine(Interface.GetBalance(Player));
+        
         var answer = Console.ReadLine();
         if (answer == "") return;
         
@@ -162,13 +151,14 @@ internal class CapitalistGame {
         }
     }
     
-    private void InventoryWindow() {
+    private static void InventoryWindow() {
+        Console.Clear();
         Console.WriteLine(Interface.GetInventory(Player));
         Console.WriteLine("Press any key to exit:");
         Console.ReadLine();
     }
     
-    private void TakeLoanWindow() {
+    private static void TakeLoanWindow() {
         Console.Clear();
         Console.WriteLine(Balance());
         Console.WriteLine("\nList of enabled loans:\n" +
@@ -193,10 +183,10 @@ internal class CapitalistGame {
         else Bank.GetLoan(Player, loan);
     }
     
-    private string Balance() =>
+    private static string Balance() =>
         $"Ur balance is: {Math.Round(Player.Balance, 3)}$" + $", Inflation is: {Math.Round(Market.Inflation, 3)}%";
     
-    private void GetLoans() {
+    private static void GetLoans() {
         Console.Clear();
         Console.WriteLine(Balance());
         Console.WriteLine("List of active loans:\n" +
@@ -217,12 +207,19 @@ internal class CapitalistGame {
                               $" ({Math.Round(Market.Cost[_products[i]], 3)}$)");
         }
         
-        Console.WriteLine($"Ur balance is: {Math.Round(Player.Balance, 3)}$" +
-                          $", Inflation is: {Math.Round(Market.Inflation, 3)}%\nTo buy enter num and 1, to sell 2, " +
+        Console.WriteLine($"Chose product for extended cost view");
+        Console.WriteLine($"{Balance()}%\nTo buy enter num and 1, to sell 2, " +
                           "after _ add count (prices for 1 product)");
         
         var line = Console.ReadLine()!;
+        
         if (line == "") return;
+
+        if (line.Length == 1) {
+            Console.WriteLine(Interface.CostGraph(int.Parse(line)));
+            Console.ReadLine();
+            return;
+        }
         
         ChangeProducts(line.Split("_")[0] switch {
             "01" => "Wood_B", "11"   => "Potato_B",
@@ -234,7 +231,7 @@ internal class CapitalistGame {
         }, int.Parse(line.Split("_")[1]));
     }
     
-    private void ChangeProducts(string name, int count) {
+    private static void ChangeProducts(string name, int count) {
         switch (name[^1]) {
             case('B'):
                 if (!Bank.Transaction(Player, Market, count * Market.Cost[name[..^2]])) return;

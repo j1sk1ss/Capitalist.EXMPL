@@ -45,10 +45,10 @@ public class Bank {
     }
     
     public double Budget { get; set; }
-    private double TaxPercent { get; set; }
-    private double Vat { get; set; }
-    private double AwaliableLoan { get; set; }
-    private Market Market { get; set; }
+    public double TaxPercent { get; set; }
+    public double Vat { get; set; }
+    public double AwaliableLoan { get; set; }
+    private Market Market { get; }
     private Network BankNetwork { get; }
 
     private List<LoanOffer> Loans { get; }
@@ -84,25 +84,25 @@ public class Bank {
 
         switch (_previousAnswer) {
             case 0:
-                IncreaseVat();
+                if (Vat < 1) IncreaseVat();
                 break;
             case 1:
-                DecreaseVat();
+                if (Vat < 0) DecreaseVat();
                 break;
             case 2:
                 PrintMoneys();
                 break;
             case 3:
-                IncreaseTax();
+                if (TaxPercent < 1) IncreaseTax();
                 break;
             case 4:
-                DecreaseTax();
+                if (TaxPercent > 0) DecreaseTax();
                 break;
             case 5:
-                IncreaseLoans();
+                if (AwaliableLoan < 1) IncreaseLoans();
                 break;
             case 6:
-                DecreaseLoans();
+                if (AwaliableLoan > 0) DecreaseLoans();
                 break;
         }
         
@@ -111,7 +111,7 @@ public class Bank {
     }
 
     private void CreateLoans() {
-        var random = new Random().Next() % AwaliableLoan;
+        var random = new Random().Next() % (Budget * AwaliableLoan);
         var id = new Random().Next();
 
         if (LoanOffers.Count < 10)
@@ -147,7 +147,7 @@ public class Bank {
     }
     
     private LoanOffer CreateLoan((double value, int years) loan, ICapitalist owner) {
-        if (AwaliableLoan < loan.value) return null!;
+        if (Budget * AwaliableLoan < loan.value) return null!;
         
         var percent = loan.years / loan.value;
 
